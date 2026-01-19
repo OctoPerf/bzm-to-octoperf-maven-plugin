@@ -1,0 +1,17 @@
+*.project
+*.prefs
+*.classpath
+.settings/
+.metadata/
+/target
+target
+/bin
+/data
+
+# Intellij
+.idea
+.idea/*
+*.iml
+*.iws
+.attach_pid*
+dependency-reduced-pom.xml

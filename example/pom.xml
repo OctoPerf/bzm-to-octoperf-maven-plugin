@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Minimal example to run the BlazeMeter to OctoPerf migration plugin.
+  Fill in your API keys below, then run:
+  mvn com.octoperf:bzm-to-octoperf-maven-plugin:1.0.0:migrate
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.octoperf</groupId>
+  <artifactId>blazemeter-to-octoperf</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.octoperf</groupId>
+        <artifactId>bzm-to-octoperf-maven-plugin</artifactId>
+        <version>1.0.0</version>
+        <configuration>
+
+          <octoPerfApiKey>PUT_YOUR_OCTOPERF_API_KEY_HERE</octoPerfApiKey>
+          <blazemeterApiKeyId>PUT_YOUR_BZM_API_KEY_ID_HERE</blazemeterApiKeyId>
+          <blazemeterApiKeySecret>PUT_YOUR_BZM_API_KEY_SECRET_HERE</blazemeterApiKeySecret>
+
+          <!-- Optional parameters -->
+          <!--                     -->
+
+          <!-- Default to SaaS platform -->
+          <octoPerfServerUrl>https://api.octoperf.com</octoPerfServerUrl>
+
+          <!-- Create a new OctoPerf Workspace even if one with the same name exists (default: false)  -->
+          <alwaysCreateNewWorkspace>false</alwaysCreateNewWorkspace>
+
+          <!-- Create a new OctoPerf Project even if one with the same name exists (default: false)  -->
+          <alwaysCreateNewProject>false</alwaysCreateNewProject>
+
+          <!-- OPTIONAL: Uncomment this parameter if you want to migrate ONLY ONE workspace
+               instead of migrating all BlazeMeter data.
+
+               This parameter is also required if you want to migrate only one project.
+
+               Example: YYY in
+               https://a.blazemeter.com/app/#/accounts/XXX/workspaces/YYY/projects/ZZZ/tests
+          -->
+          <!--<bzmWorkspaceId>YYY</bzmWorkspaceId>-->
+
+          <!-- OPTIONAL: Uncomment this parameter if you want to migrate ONLY ONE project
+               instead of all projects in the selected workspace.
+
+               Example: ZZZ in:
+               https://a.blazemeter.com/app/#/accounts/XXX/workspaces/YYY/projects/ZZZ/tests
+          -->
+          <!--<bzmProjectId>ZZZ</bzmProjectId>-->
+
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>octoperf-snapshots</id>
+      <url>https://github.com/octoperf/maven-repository/raw/master/snapshots</url>
+    </pluginRepository>
+    <pluginRepository>
+      <id>octoperf-releases</id>
+      <url>https://github.com/octoperf/maven-repository/raw/master/releases</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+</project>
