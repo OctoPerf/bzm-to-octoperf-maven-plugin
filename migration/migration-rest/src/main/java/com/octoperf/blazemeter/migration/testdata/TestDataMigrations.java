@@ -1,7 +1,9 @@
 package com.octoperf.blazemeter.migration.testdata;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.octoperf.blazemeter.migration.label.MigrationContextLabelService;
 import com.octoperf.blazemeter.migration.metadata.CopyMetadata;
+import com.octoperf.blazemeter.migration.testdata.csv.DatasourceCsvReferenceService;
 import com.octoperf.blazemeter.test.entity.TestDataFileRequest;
 import com.octoperf.blazemeter.test.entity.TestDependencies;
 import com.octoperf.entity.design.CSVVariable;
@@ -20,8 +22,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.Optional.of;
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
+import static org.apache.commons.lang3.BooleanUtils.isFalse;
 
 @Slf4j
 @Service
@@ -29,13 +33,15 @@ import static lombok.AccessLevel.PRIVATE;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 class TestDataMigrations implements TestDataMigrationService {
   @NonNull
-  final BlazemeterTests bzmT;
+  BlazemeterTests bzmT;
   @NonNull
-  final OctoperfProjectFiles projectFiles;
+  OctoperfProjectFiles projectFiles;
   @NonNull
-  final OctoperfVariables variables;
+  OctoperfVariables variables;
   @NonNull
-  final MigrationContextLabelService labels;
+  MigrationContextLabelService labels;
+  @NonNull
+  DatasourceCsvReferenceService csvReferences;
 
   @Override
   public void migrateTestData(final CopyMetadata metadata) {
@@ -60,16 +66,25 @@ class TestDataMigrations implements TestDataMigrationService {
     return bzmT.getTest(bzmTestId)
       .getDependencies()
       .flatMap(TestDependencies::getData)
-      .map(testData -> bzmT.getTestDataFile(
-        bzmWorkspaceId,
-        new TestDataFileRequest(
-          TestDataFileRequest.Data
-            .builder()
-            .type("datamodel")
-            .attributes(TestDataFileRequest.Attributes.builder().model(testData).build())
-            .build()
-        )
-      ));
+      .map(testData -> generateTestDataFile(bzmWorkspaceId, bzmTestId, testData));
+  }
+
+  ResponseBody generateTestDataFile(final int bzmWorkspaceId, final int bzmTestId, final JsonNode testData) {
+    final var csvRefs = csvReferences.extractCsvReferences(testData, bzmTestId);
+    final var context = of(csvRefs)
+      .filter(refs -> isFalse(refs.isEmpty()))
+      .map(TestDataFileRequest.Context::new);
+    final var attributes = TestDataFileRequest.Attributes
+      .builder()
+      .model(testData)
+      .context(context)
+      .build();
+    final var data = TestDataFileRequest.Data
+      .builder()
+      .type("datamodel")
+      .attributes(attributes)
+      .build();
+    return bzmT.getTestDataFile(bzmWorkspaceId, new TestDataFileRequest(data));
   }
 
   void createCsvVariable(final String projectId,

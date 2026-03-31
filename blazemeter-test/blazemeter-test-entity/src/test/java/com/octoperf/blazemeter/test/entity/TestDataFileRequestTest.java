@@ -6,6 +6,7 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.testing.NullPointerTester.Visibility.PACKAGE;
+import static java.util.Optional.empty;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -34,7 +35,7 @@ class TestDataFileRequestTest {
     return new TestDataFileRequest(
       new TestDataFileRequest.Data(
         "type",
-        new TestDataFileRequest.Attributes(new LongNode(1L))
+        new TestDataFileRequest.Attributes(new LongNode(1L), empty())
       )
     );
   }

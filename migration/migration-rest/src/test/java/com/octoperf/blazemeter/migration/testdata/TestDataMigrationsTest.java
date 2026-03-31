@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMultimap;
 import com.octoperf.blazemeter.migration.label.MigrationContextLabelService;
 import com.octoperf.blazemeter.migration.metadata.CopyMetadata;
 import com.octoperf.blazemeter.migration.metadata.CopyMetadataTest;
+import com.octoperf.blazemeter.migration.testdata.csv.DatasourceCsvReferenceService;
 import com.octoperf.blazemeter.test.entity.TestDataFileRequest;
 import com.octoperf.blazemeter.test.entity.TestDetailTest;
 import com.octoperf.entity.design.VariableWrapper;
@@ -25,8 +26,7 @@ import java.util.Map;
 
 import static java.util.Optional.of;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.quality.Strictness.LENIENT;
 
@@ -43,13 +43,14 @@ class TestDataMigrationsTest {
   @Mock
   MigrationContextLabelService labels;
   @Mock
+  DatasourceCsvReferenceService csvReferences;
+  @Mock
   ResponseBody responseBody;
 
   TestDataMigrations migrations;
 
   @BeforeEach
-  void before() {
-    migrations = new TestDataMigrations(bzmT, projectFiles, variables, labels);
+  void setup() {
     when(labels.buildContextualizedLabel(anyString(), any(CopyMetadata.class))).thenReturn("logContext");
     when(variables.createVariable(any(VariableWrapper.class))).thenReturn(VariableWrapperTest.newInstance());
     when(bzmT.getTest(anyInt())).thenReturn(TestDetailTest.newInstance());
@@ -58,6 +59,7 @@ class TestDataMigrationsTest {
     when(responseBody.byteStream()).thenReturn(input);
     when(responseBody.contentType()).thenReturn(mediaType);
     when(bzmT.getTestDataFile(anyInt(), any(TestDataFileRequest.class))).thenReturn(responseBody);
+    migrations = new TestDataMigrations(bzmT, projectFiles, variables, labels, csvReferences);
   }
 
   @Test
@@ -71,7 +73,7 @@ class TestDataMigrationsTest {
 
     migrationsSpy.migrateTestData(metadata);
 
-    verify(migrationsSpy).copyTestDataFile("pId", 2,1, "logContext");
+    verify(migrationsSpy).copyTestDataFile("pId", 2, 1, "logContext");
   }
 
   @Test

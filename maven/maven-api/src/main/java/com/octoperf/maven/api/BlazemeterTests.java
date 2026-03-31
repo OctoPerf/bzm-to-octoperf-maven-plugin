@@ -6,6 +6,7 @@ import com.octoperf.blazemeter.test.entity.TestListItem;
 import okhttp3.ResponseBody;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BlazemeterTests {
 
@@ -14,6 +15,8 @@ public interface BlazemeterTests {
   ResponseBody getTestDataFile(int testId, TestDataFileRequest r);
 
   List<TestFile> getTestFiles(int testId);
+
+  Optional<String> getTestFileLink(int testId, String fileName);
 
   TestDetail getTest(int testId);
 }

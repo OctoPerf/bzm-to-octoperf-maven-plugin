@@ -14,6 +14,7 @@ import okhttp3.ResponseBody;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.List.of;
 import static lombok.AccessLevel.PACKAGE;
@@ -52,6 +53,14 @@ final class BlazemeterRestTests implements BlazemeterTests {
     return calls.execute(testApi.testFiles(testId))
       .map(SearchListResult::getResult)
       .orElse(of());
+  }
+
+  @Override
+  public Optional<String> getTestFileLink(final int testId, final String fileName) {
+    return getTestFiles(testId).stream()
+      .filter(f -> f.getName().equals(fileName))
+      .findFirst()
+      .map(TestFile::getLink);
   }
 
   @Override
