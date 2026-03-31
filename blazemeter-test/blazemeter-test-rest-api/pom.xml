@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.octoperf</groupId>
 		<artifactId>blazemeter-test</artifactId>
-		<version>1.0.0</version>
+		<version>1.1.0</version>
 	</parent>
 	<artifactId>blazemeter-test-rest-api</artifactId>
 
