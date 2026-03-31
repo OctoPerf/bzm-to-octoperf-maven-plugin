@@ -38,7 +38,7 @@ If you are not familiar with Maven, you can use the ready-to-run example project
 5. Run the migration from the directory containing the pom.xml file:
 
     ```bash
-    mvn com.octoperf:bzm-to-octoperf-maven-plugin:1.0.0:migrate
+    mvn com.octoperf:bzm-to-octoperf-maven-plugin:1.1.0:migrate
     ```
 
 That’s it 🎉
@@ -103,13 +103,13 @@ This helps prevent unnecessary duplication of Workspaces and Projects during rep
 
 The plugin is distributed via the [OctoPerf Maven Repository](https://github.com/OctoPerf/maven-repository) hosted on GitHub.
 
-**Latest released version**: `1.0.0`
+**Latest released version**: `1.1.0`
 
 ## Compatibility
 
 | Plugin Version | OctoPerf Version |
 |----------------|------------------|
-| `1.0.0+`       | `16.1.0+`        |
+| `1.1.0+`       | `16.1.0+`        |
 
 ## Goals Overview
 
@@ -163,7 +163,7 @@ Specify the plugin version in your project's plugin configuration:
   <packaging>pom</packaging>
   <groupId>com.octoperf</groupId>
   <artifactId>octoperf-test</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.1.0-SNAPSHOT</version>
 
   <properties>
     <maven.compiler.source>17</maven.compiler.source>
@@ -176,7 +176,7 @@ Specify the plugin version in your project's plugin configuration:
       <plugin>
         <groupId>com.octoperf</groupId>
         <artifactId>bzm-to-octoperf-maven-plugin</artifactId>
-        <version>1.0.0</version>
+        <version>1.1.0</version>
         <configuration>
           <!-- See configuration below -->
         </configuration>
@@ -251,13 +251,13 @@ Specify the plugin version in your project's plugin configuration:
 Please replace the placeholders with the relevant parameters. Once done, run the following command:
 
 ```bash
-mvn com.octoperf:bzm-to-octoperf-maven-plugin:1.0.0:migrate
+mvn com.octoperf:bzm-to-octoperf-maven-plugin:1.1.0:migrate
 ```
 
 The output should look similar to the following:
 
 ```bash
-[INFO] --- bzm-to-octoperf-maven-plugin:1.0.0:migrate (default-cli) @ octoperf-test ---
+[INFO] --- bzm-to-octoperf-maven-plugin:1.1.0:migrate (default-cli) @ octoperf-test ---
 [INFO] ------ [BlazeMeter to OctoPerf] starting migration ------
 [INFO] [WORKSPACE] 'Default workspace'
 [INFO] [PROJECT] 'project1'
